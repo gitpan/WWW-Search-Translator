@@ -1,7 +1,7 @@
 # Translator.pm
 # by Jim Smyser
 # Copyright (C) 2000 by Jim Smyser 
-# $Id: Translator.pm,v 1.01 2000/05/21 06:14:55 jims Exp $
+# $Id: Translator.pm,v 1.02 2000/06/08 11:09:07 jims Exp $
 
 
 package WWW::Search::Translator;
@@ -15,9 +15,9 @@ WWW::Search::Translator - class for Translating languages
 
   use WWW::Search;
   %opts = (
-  lp => param(TransOption),
+  lp => param(en_de),
   );
-
+ $query = "a whole bunch of english text to be translated to german";
  my $search = new WWW::Search('Translator');
  $search->native_query(WWW::Search::escape_query($query),\%opts);
   while (my $result = $search->next_result())
@@ -32,7 +32,11 @@ This is a simple no thrills class enabling users to translate
 text through AV Translations F<http://babel.altavista.com>.
 This translating via this method seems much faster than thru
 browser interface. Makes a neat addition to any web page. 
-SEE OPTIONS.
+Translated text is returned thru $result->raw, there is no
+url's or title $results like typical WWW::Search results, just
+a stream of text that was translated from the query text entered.
+
+SEE TRANSLATION OPTIONS and TIPS.
 
 This class exports no public interface; all interaction should
 be done through WWW::Search objects.
@@ -63,6 +67,14 @@ I would use textarea for both user input and printing
 $result->url into. This way users can scroll the returned
 text and have large area to type/paste text for input.
 
+=head1 CHANGES
+
+VERSION 1.02
+
+Got time to go back and look at what was needed to parse multi
+lines of the text area. Everything looks OK now and this 
+backend will parse single and multi lines of translated text.
+
 =head1 AUTHOR
 
 C<WWW::Search::Translator> is written and maintained
@@ -86,7 +98,7 @@ require Exporter;
 @EXPORT = qw();
 @EXPORT_OK = qw();
 @ISA = qw(WWW::Search Exporter);
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 use Carp ();
 use WWW::Search(qw(generic_option strip_tags));
@@ -193,91 +205,12 @@ sub native_retrieve_some {
         $raw =~ s/<.*?>//g;
         $hit->raw($raw);
         $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
+        # Pick up all the text lines till we encounter a tag
+  } elsif ($state eq $HITS && m@^(.*?)@i) {
+        $raw .= $_ . " " if (not $raw =~ /<\//);
+        $hit->raw($raw) if (not $raw =~ /<\//);
         $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $HITS;
-  } elsif ($state eq $HITS && m@^(\w.*?)@i) {
-        $raw .= $_ . " ";
-        $hit->raw($raw) if (defined($hit));
-        $state = $END;
-  } elsif ($state eq $END && m@^</td>@i) {
+  } elsif ($state eq $HITS && m/^<\//) {
         #done
              } 
           else 
