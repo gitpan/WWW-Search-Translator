@@ -1,0 +1,17 @@
+Translator
+
+Requires WWW::Search
+
+Module backend for WWW::Search for translating words to <-> from:
+
+German
+French
+English
+Spanish
+Italian
+Russian
+Portuguese
+
+
+For a list of current working backends see http://members.xoom.com/backends
+
